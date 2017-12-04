@@ -1,0 +1,41 @@
+API_URL = 'https://api.tadata.me/imt/v1/?imdb_id=%s'
+
+####################################################################################################
+def MediaObjectsForURL(url):
+
+	return [
+		MediaObject(
+			container = Container.MP4,
+			video_codec = VideoCodec.H264,
+			video_resolution = '720',
+			audio_codec = AudioCodec.AAC,
+			audio_channels = 2,
+			optimized_for_streaming = True,
+			parts = [
+				PartObject(key=Callback(PlayVideo, url=url))
+			]
+		)
+	]
+
+####################################################################################################
+def PlayVideo(url, **kwargs):
+
+	uri = url.split('/')
+
+	try:
+		json_obj = JSON.ObjectFromURL(API_URL % (uri[-2]))
+	except:
+		Log("*** Failed retrieving data from %s ***" % (API_URL % (uri[-2])))
+		return None
+
+	if 'error' in json_obj:
+		Log("*** An error occurred: %s ***" % (json_obj['error']))
+		return None
+
+	for video in json_obj['video']:
+
+		if video['title'] == String.Unquote(uri[-1]):
+			return Redirect(video['url'])
+
+	Log("*** Could not find video ***")
+	return None

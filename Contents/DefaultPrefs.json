@@ -1,0 +1,20 @@
+[
+	{
+		"id": "add_trailers",
+		"label": "Add Trailers",
+		"type": "bool",
+		"default": "true"
+	},
+	{
+		"id": "add_featurettes",
+		"label": "Add Featurettes",
+		"type": "bool",
+		"default": "true"
+	},
+	{
+		"id": "add_clips",
+		"label": "Add Clips",
+		"type": "bool",
+		"default": "false"
+	}
+]
